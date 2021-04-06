@@ -5,6 +5,9 @@ package it.polito.tdp.spellchecker;
  */
 import java.net.URL;
 import it.polito.tdp.spellchecker.model.Dictionary;
+import it.polito.tdp.spellchecker.model.RichWord;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,6 +27,10 @@ public class FXMLController {
 	private List<String> inputText;
 
 		public void setModel(Dictionary model) {
+			this.txtInserito.setText("Selezionare una lingua");
+			this.btnSpellCheck.setDisable(true);
+			this.btnClearText.setDisable(true);
+			boxLingua.getItems().addAll("English","Italian");
 			this.dizionario=model;
 			
 		}
@@ -38,9 +45,8 @@ public class FXMLController {
 
 
     @FXML
-    private ComboBox<?> boxLingua;
-    ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("English", "Italian"));
-    
+    private ComboBox<String> boxLingua;
+  
 
     @FXML
     private TextArea txtInserito;
@@ -83,51 +89,56 @@ public class FXMLController {
 
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	this.txtRisultato.clear();
     	List<String> input = new LinkedList<String>();
-    	String language ;
-    	StringTokenizer st ;
-    	String s;
     	
     	if(boxLingua.getValue()==null) {
     		this.txtInserito.setText("Selezione una lingua!");
     		return;
     	}
-    	
-    	
-    	
-    	try {
-    		 s = this.txtInserito.getText();
-    		
-    		
-    	} catch(Exception e) {
-    		throw new RuntimeException(e);
+    	if(!dizionario.loadDictionary(boxLingua.getValue().toString())) {
+    		this.txtRisultato.setText("Errore nel caricamento del dizionario");
+    		return;
     	}
-    	 st = new StringTokenizer(s," ");
-    	 
-    	 int count =0;
-    	 while(st.hasMoreTokens()) {
-    		 input.add(st.toString());
-    		 count++;
-    	 }
     	
-    	  
-
-     	if(this.boxLingua.accessibleTextProperty() != null) {
-     		if(this.boxLingua.getAccessibleText().equals("English")) {
-     			//TODO: Load Dictionary
-     			
-     			
-     			//d.loadDictionary("English");
-     			
-     		} else {
-     			//d.loadDictionary("Italian");
-     		}
+    	String inputText=this.txtInserito.getText();
+    	if(inputText.isEmpty()) {
+    		this.txtRisultato.setText("Inserire un testo da correggere!");
+    		return;
+    	}
+    	
+    	inputText.replaceAll("\n", " ");
+    	inputText = inputText.replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]]", "");
+    	StringTokenizer st = new StringTokenizer(inputText, " ");
+    	
+    	while(st.hasMoreTokens()) {
+    		input.add(st.nextToken());
+    	}
+    	
+    	long start = System.nanoTime();
+    	List<RichWord> outputTextList;
+    	outputTextList = dizionario.spellCheckText(input);
+    	long end = System.nanoTime();
+    	int numErrori =0;
+    	
+    	StringBuilder richText = new StringBuilder();
+    	
+    	for(RichWord r : outputTextList) {
+    		if(!r.isCorreta()) {
+    			numErrori++;
+    			richText.append(r.getParola()+"\n");
+    		}
+    	}
+    	
+    	this.txtRisultato.setText(richText.toString());
+    	this.txtRisultato.appendText("\n"+"Number of Errors:"+numErrori);
+    	
      	}
      	
     	
     	
     	
-    }
+    
 
     @FXML
     void initialize() {
