@@ -1,4 +1,4 @@
-package model;
+package  it.polito.tdp.spellchecker.model;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -82,9 +82,6 @@ e restituisce una lista di RichWord.
 		return dizionario;
 	}
 
-	public void setDizionario(List<String> dizionario) {
-		this.dizionario = dizionario;
-	}
 
 	public String getLanguage() {
 		return language;

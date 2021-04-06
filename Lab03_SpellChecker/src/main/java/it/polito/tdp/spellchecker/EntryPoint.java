@@ -1,8 +1,6 @@
 package it.polito.tdp.spellchecker;
 
-
-import java.util.Dictionary;
-
+import it.polito.tdp.spellchecker.model.Dictionary;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,12 +8,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
+
 public class EntryPoint extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
       
-    	Dictionary model=new Dictionary();
+    	 Dictionary model=new Dictionary();
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
     	Parent root= loader.load();
         

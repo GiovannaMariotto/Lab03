@@ -1,4 +1,4 @@
-package model;
+package  it.polito.tdp.spellchecker.model;
 
 import java.util.ArrayList;
 import java.util.List;

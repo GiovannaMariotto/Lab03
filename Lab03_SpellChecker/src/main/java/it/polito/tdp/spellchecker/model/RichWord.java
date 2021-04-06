@@ -1,4 +1,4 @@
-package model;
+package  it.polito.tdp.spellchecker.model;
 
 public class RichWord {
 
@@ -13,6 +13,11 @@ public class RichWord {
 		super();
 		this.parola = parola;
 		this.correta = correta;
+	}
+
+	@Override
+	public String toString() {
+		return "RichWord [parola=" + parola + ", correta=" + correta + "]";
 	}
 
 	@Override

@@ -4,7 +4,7 @@ package it.polito.tdp.spellchecker;
  * Sample Skeleton for 'Scene.fxml' Controller Class
  */
 import java.net.URL;
-import java.util.Dictionary;
+import it.polito.tdp.spellchecker.model.Dictionary;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,7 +25,6 @@ public class FXMLController {
 
 		public void setModel(Dictionary model) {
 			this.dizionario=model;
-			
 			
 		}
 		
@@ -139,6 +138,9 @@ public class FXMLController {
         assert btnClearText != null : "fx:id=\"btnClearText\" was not injected: check your FXML file 'Scene.fxml'.";
 
     }
+
+
+	
    
 }
 
